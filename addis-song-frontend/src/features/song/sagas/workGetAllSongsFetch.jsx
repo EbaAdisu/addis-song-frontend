@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects'
 import { uri } from '../../../config'
-import { getAllSongsSuccess } from '../songSlice'
+import { getAllSongsSuccess, getAllSongsFailure } from '../songSlice'
 
 // Selector function to get the token from state
 const selectToken = (state) => state.user.token
@@ -18,8 +18,12 @@ function* workGetAllSongsFetch() {
             },
         })
         const data = yield response.json()
-        // console.log(data)
-        yield put(getAllSongsSuccess(data.songs))
+
+        if (response.status == 200) {
+            yield put(getAllSongsSuccess(data.songs))
+        } else {
+            yield put(getAllSongsFailure(data.message))
+        }
     } catch (error) {
         console.error(error)
     }

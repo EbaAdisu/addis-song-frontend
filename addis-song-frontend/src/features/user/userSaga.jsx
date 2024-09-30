@@ -1,25 +1,11 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
-import { useSelector } from 'react-redux'
-import { uri } from '../../config'
-import { setUser } from './userSlice'
+import { takeLatest } from 'redux-saga/effects'
 
-function* workSetUserFetch(action) {
-    try {
-        const response = yield call(fetch, uri + '/user/signin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(action.payload),
-        })
-        const data = yield response.json()
-        yield put(setUser(data))
-        console.log(data)
-    } catch (error) {
-        console.error(error)
-    }
-}
+import { workSignupRequest } from './sagas/workSignupRequest' // import the signup worker
+import { workSigninRequest } from './sagas/workSigninRequest' // import the signin worker
 
 function* userSaga() {
-    yield takeLatest('user/setUser', workSetUserFetch)
+    yield takeLatest('user/signupRequest', workSignupRequest) // listen for signupRequest action
+    yield takeLatest('user/signinRequest', workSigninRequest) // listen for signinRequest action
 }
+
+export default userSaga

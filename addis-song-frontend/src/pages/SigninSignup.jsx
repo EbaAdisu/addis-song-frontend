@@ -1,44 +1,27 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { uri } from '../config'
+import { signupRequest, signinRequest } from '../features/user/userSlice'
 
 const SigninSignup = () => {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
-    const [isLogin, setIsLogin] = useState(true) // Toggle between Signin and signup
+    const [isSignin, setIsSignin] = useState(true) // Toggle between Signin and signup
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const endpoint = isLogin ? 'signin' : 'signup'
-
-        try {
-            const response = await fetch(`${uri}/auth/${endpoint}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, password }),
-            })
-
-            const data = await response.json()
-            console.log(data)
-
-            if (response.ok) {
-                isLogin
-                    ? navigate('/home', { state: { name } })
-                    : navigate('/signup')
-            } else {
-                alert(`Error: ${data.message}`)
-            }
-        } catch (error) {
-            alert('An error occurred. Please try again.')
+        if (isSignin) {
+            dispatch(signinRequest({ name, password }))
+        } else {
+            dispatch(signupRequest({ name, password }))
         }
     }
 
     return (
         <div style={{ textAlign: 'center' }}>
-            <h2>{isLogin ? 'Signin' : 'Signup'}</h2>
+            <h2>{isSignin ? 'Signin' : 'Signup'}</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Name:</label>
@@ -58,10 +41,10 @@ const SigninSignup = () => {
                         required
                     />
                 </div>
-                <button type="submit">{isLogin ? 'Signin' : 'Signup'}</button>
+                <button type="submit">{isSignin ? 'Signin' : 'Signup'}</button>
             </form>
-            <button onClick={() => setIsLogin(!isLogin)}>
-                {isLogin ? 'Switch to Signup' : 'Switch to Signin'}
+            <button onClick={() => setIsSignin(!isSignin)}>
+                {isSignin ? 'Switch to Signup' : 'Switch to Signin'}
             </button>
         </div>
     )

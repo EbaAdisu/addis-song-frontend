@@ -17,8 +17,12 @@ const songSlice = createSlice({
             state.error = null
             state.songs = action.payload
         },
+        getAllSongsFailure: (state, action) => {
+            state.error = action.payload
+        },
         getSongFileFetch: (state, action) => state,
         getSongFileSuccess: (state, action) => {
+            console.log('success', action.payload)
             state.currentSong = action.payload
         },
         getSongFileFailure: (state, action) => {
@@ -30,6 +34,7 @@ const songSlice = createSlice({
 export const {
     getAllSongsFetch,
     getAllSongsSuccess,
+    getAllSongsFailure,
     getSongFileFetch,
     getSongFileSuccess,
     getSongFileFailure,

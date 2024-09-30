@@ -9,10 +9,6 @@ import AddSong from './pages/AddSong'
 import { getAllSongsFetch } from './features/song/songSlice'
 
 function App() {
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(getAllSongsFetch())
-    }, [])
     return (
         <Router>
             <Routes>

@@ -1,15 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    name: 'ego',
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjI5ZThkOTNhZTI5MDBkZGVhNDRkYiIsIm5hbWUiOiJlZ28iLCJpYXQiOjE3MjcxODU1ODMsImV4cCI6MTcyOTc3NzU4M30.172uXgyq_Ae25N1NXobhs3OaTehL4hjmVH4G39VSslo',
+    name: null,
+    token: null,
+    status: 'idle', // add this to track request status
+    error: null, // add this to handle any errors
 }
 
 const userSlice = createSlice({
-    name: 'name',
+    name: 'user',
     initialState,
     reducers: {
-        setUser: (state, action) => {
+        signupRequest: (state, action) => {
+            state.status = 'loading'
+        },
+        signupSuccess: (state) => {
+            state.status = 'succeeded'
+        },
+        signupFailure: (state, action) => {
+            state.status = 'failed'
+            state.error = action.payload.error
+        },
+        signinRequest: (state) => {
+            state.status = 'loading'
+        },
+        signinSuccess: (state, action) => {
+            state.status = 'succeeded'
+            state.name = action.payload.name
+            state.token = action.payload.token
+        },
+        signinFailure: (state, action) => {
+            state.status = 'failed'
+            state.error = action.payload.error
+        },
+        setUserFetch: (state, action) => {},
+        setUserSuccess: (state, action) => {
             state.name = action.payload.name
             state.token = action.payload.token
         },
@@ -19,5 +44,17 @@ const userSlice = createSlice({
         },
     },
 })
-export const { setUser, removeUser } = userSlice.actions
+
+export const {
+    signupRequest,
+    signupSuccess,
+    signupFailure,
+    signinRequest,
+    signinSuccess,
+    signinFailure,
+    setUserFetch,
+    setUserSuccess,
+    removeUser,
+} = userSlice.actions
+
 export default userSlice.reducer
