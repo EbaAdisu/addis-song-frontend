@@ -8,6 +8,8 @@ export function* workAddSongFetchRequest(action) {
     const token = localStorage.getItem('token')
     const formData = action.payload
     try {
+        console.log(Object.fromEntries(formData.entries()))
+        console.log('shit')
         const response = yield call(fetch, `${uri}/song`, {
             method: 'POST',
             headers: {
@@ -22,6 +24,7 @@ export function* workAddSongFetchRequest(action) {
         const data = yield response.json()
         yield put(addSongSuccess(data.song))
     } catch (error) {
+        console.log('error', error.message)
         yield put(addSongFailure(error.message))
     }
 }

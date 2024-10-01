@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 
 import Song from '../components/Song'
 import Navbar from '../components/Navbar'
-import { getAllSongsFetch } from '../features/song/songSlice'
+import { getAllMySongsFetch } from '../features/song/songSlice'
 import { useNavigate } from 'react-router-dom'
 
 function MySongs() {
@@ -15,7 +15,7 @@ function MySongs() {
     const audioRef = useRef()
 
     useEffect(() => {
-        dispatch(getAllSongsFetch())
+        dispatch(getAllMySongsFetch())
     }, [])
 
     useEffect(() => {

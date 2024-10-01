@@ -20,6 +20,11 @@ export const store = configureStore({
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ['song/addSongFetch'], // Ignore specific actions
+                ignoredActionPaths: ['payload.file'], // Ignore paths with non-serializable data
+                ignoredPaths: ['song.formData'], // Ignore paths in state
+            },
             thunk: false,
         }).concat(sagaMiddleware),
 })
