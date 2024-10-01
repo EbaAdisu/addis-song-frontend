@@ -1,15 +1,24 @@
+import { Link } from 'react-router-dom'
+import Logout from './Logout'
+import CheckAuth from './CheckAuth'
+
 function Navbar() {
     return (
         <nav>
+            <CheckAuth />
             <ul>
                 <li>
-                    <a href="/home">Home</a>
+                    <Link to="/home">Home</Link>
                 </li>
                 <li>
-                    <a href="/my-songs">My Songs</a>
+                    <Link to="/my-songs">My Songs</Link>
+                </li>
+                <li>
+                    <Logout />
                 </li>
             </ul>
         </nav>
     )
 }
+
 export default Navbar

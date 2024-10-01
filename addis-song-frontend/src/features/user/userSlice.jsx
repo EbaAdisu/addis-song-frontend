@@ -15,7 +15,7 @@ const userSlice = createSlice({
             state.status = 'loading'
         },
         signupSuccess: (state) => {
-            state.status = 'succeeded'
+            state.status = 'signedup'
         },
         signupFailure: (state, action) => {
             state.status = 'failed'
@@ -25,22 +25,27 @@ const userSlice = createSlice({
             state.status = 'loading'
         },
         signinSuccess: (state, action) => {
-            state.status = 'succeeded'
+            state.status = 'signedin'
             state.name = action.payload.name
             state.token = action.payload.token
+            localStorage.setItem('name', action.payload.name)
+            localStorage.setItem('token', action.payload.token)
         },
         signinFailure: (state, action) => {
             state.status = 'failed'
             state.error = action.payload.error
         },
         setUserFetch: (state, action) => {},
-        setUserSuccess: (state, action) => {
-            state.name = action.payload.name
-            state.token = action.payload.token
+        setUserSuccess: (state) => {
+            state.name = localStorage.getItem('name')
+            state.token = localStorage.getItem('token')
         },
         removeUser: (state) => {
             state.name = null
             state.token = null
+            localStorage.removeItem('name')
+            localStorage.removeItem('token')
+            state.status = 'loggedout'
         },
     },
 })

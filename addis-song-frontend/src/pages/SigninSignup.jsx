@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { signupRequest, signinRequest } from '../features/user/userSlice'
 
@@ -7,8 +7,9 @@ const SigninSignup = () => {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [isSignin, setIsSignin] = useState(true) // Toggle between Signin and signup
-    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { status, error } = useSelector((state) => state.user) // Access status and error from Redux state
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -19,9 +20,17 @@ const SigninSignup = () => {
         }
     }
 
+    // Navigate based on status
+    if (status === 'signedin' && isSignin) {
+        navigate('/home')
+    } else if (status === 'signedup' && !isSignin) {
+        setIsSignin(true)
+    }
+
     return (
         <div style={{ textAlign: 'center' }}>
             <h2>{isSignin ? 'Signin' : 'Signup'}</h2>
+            {error && <p>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Name:</label>

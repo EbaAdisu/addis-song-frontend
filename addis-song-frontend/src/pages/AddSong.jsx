@@ -1,44 +1,24 @@
-// src/components/AddSong.js
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { uri, token } from '../config'
+import { useDispatch } from 'react-redux'
+import { addSongFetch } from '../features/song/songSlice'
 
-const AddSong = () => {
+function AddSong() {
     const [title, setTitle] = useState('')
     const [artist, setArtist] = useState('')
     const [description, setDescription] = useState('')
     const [file, setFile] = useState(null)
-    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    const handleSubmit = async (event) => {
-        event.preventDefault()
+    const handleSubmit = (e) => {
+        e.preventDefault()
         const formData = new FormData()
         formData.append('title', title)
         formData.append('artist', artist)
         formData.append('description', description)
-        if (file) {
-            formData.append('song', file)
-        }
+        formData.append('song', file)
 
-        try {
-            const response = await fetch(`${uri}/song`, {
-                method: 'POST',
-                headers: {
-                    authorization: `Bearer ${token}`,
-                },
-                body: formData,
-            })
-
-            if (response.ok) {
-                navigate('/my-songs') // Redirect to MySongs page
-            } else {
-                alert('Failed to add song')
-            }
-        } catch (error) {
-            alert('An error occurred. Please try again.')
-        }
+        dispatch(addSongFetch(formData))
     }
-
     return (
         <div style={{ textAlign: 'center' }}>
             <h2>Add New Song</h2>
@@ -63,7 +43,8 @@ const AddSong = () => {
                 </div>
                 <div>
                     <label>Description:</label>
-                    <textarea
+                    <input
+                        type="text"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required

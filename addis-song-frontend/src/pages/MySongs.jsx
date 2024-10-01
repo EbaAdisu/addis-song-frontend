@@ -1,28 +1,34 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useRef } from 'react'
+
 import Song from '../components/Song'
 import Navbar from '../components/Navbar'
-import { uri, token } from '../config'
+import { getAllSongsFetch } from '../features/song/songSlice'
+import { useNavigate } from 'react-router-dom'
 
 function MySongs() {
-    const [songs, setSongs] = useState([])
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { songs, currentSong, error } = useSelector((state) => state.song)
+    const name = localStorage.getItem('name')
+    // console.log(error)
+    const audioRef = useRef()
 
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch(`${uri}/song`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: `Bearer ${token}`,
-                },
-            })
-            const data = await response.json()
-            console.log(data.songs)
-            setSongs(data.songs)
-        }
-        fetchData()
+        dispatch(getAllSongsFetch())
     }, [])
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.load() // Manually load the new source
+        }
+    }, [currentSong])
+
+    const formattedSongs = (songs) => {
+        return songs.map((song) => {
+            return <Song key={song._id} song={song} />
+        })
+    }
 
     const goToAddSongPage = () => {
         navigate('/add-song')
@@ -31,15 +37,21 @@ function MySongs() {
     return (
         <>
             <Navbar />
+
             <div>
+                <h1>Welcome, {name}!</h1>
+                {error}
                 <button onClick={goToAddSongPage}>Add New Song</button>
-                <h1>My Songs</h1>
-                {songs.map((song) => {
-                    return <Song key={song.id} song={song} />
-                })}
+                <h3>My Songs</h3>
+
+                <audio ref={audioRef} controls>
+                    {' '}
+                    {/* Add the ref to the audio element */}
+                    <source src={currentSong} type="audio/mpeg" />
+                </audio>
+                {formattedSongs(songs)}
             </div>
         </>
     )
 }
-
 export default MySongs

@@ -6,10 +6,9 @@ import Navbar from '../components/Navbar'
 import { getAllSongsFetch } from '../features/song/songSlice'
 
 function Home() {
-    const { songs, currentSong, error } = useSelector((state) => state.song)
-    const { name } = useSelector((state) => state.user)
-    console.log(error)
     const dispatch = useDispatch()
+    const { songs, currentSong, error } = useSelector((state) => state.song)
+    const name = localStorage.getItem('name')
     const audioRef = useRef()
 
     useEffect(() => {
@@ -24,11 +23,9 @@ function Home() {
 
     const formattedSongs = (songs) => {
         return songs.map((song) => {
-            return <Song key={song.id} song={song} />
+            return <Song key={song._id} song={song} />
         })
     }
-
-    console.log('current song', currentSong)
 
     return (
         <>
@@ -43,7 +40,7 @@ function Home() {
                     {/* Add the ref to the audio element */}
                     <source src={currentSong} type="audio/mpeg" />
                 </audio>
-                {formattedSongs}
+                {formattedSongs(songs)}
             </div>
         </>
     )
