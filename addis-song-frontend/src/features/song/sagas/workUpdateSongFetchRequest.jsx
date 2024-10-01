@@ -5,7 +5,7 @@ import { updateSongSuccess, updateSongFailure } from '../songSlice'
 export function* workUpdateSongFetchRequest(action) {
     const token = localStorage.getItem('token')
     const { id, title, artist, description } = action.payload
-    console.log(action.payload)
+    // console.log(action.payload)
     try {
         const response = yield call(fetch, `${uri}/song/${id}`, {
             method: 'PATCH',
@@ -15,14 +15,14 @@ export function* workUpdateSongFetchRequest(action) {
             },
             body: JSON.stringify({ title, artist, description }),
         })
-        console.log('scad', response)
+        // console.log('scad', response)
 
         if (!response.ok) {
             throw new Error('Failed to update song')
         }
 
         const data = yield response.json()
-        console.log(data)
+        // console.log(data)
         yield put(updateSongSuccess(data.song))
     } catch (error) {
         yield put(updateSongFailure(error.message))
