@@ -3,9 +3,13 @@ import styled from '@emotion/styled'
 
 export const SongContainer = styled.div`
     display: flex;
+
     flex-direction: column;
     justify-content: space-between;
     height: 100vh; /* Full viewport height */
+    width: 100%;
+    // max width to prevent overflow
+    max-width: 800px;
     padding: 20px;
     background-color: #f8f9fa;
 

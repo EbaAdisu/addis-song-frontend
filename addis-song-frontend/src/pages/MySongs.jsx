@@ -5,9 +5,14 @@ import Navbar from '../components/Navbar'
 import SongList from '../components/SongsList'
 import { getAllMySongsFetch } from '../features/song/songSlice'
 import { useNavigate } from 'react-router-dom'
+import {
+    ErrorMessage,
+    HomeContainer,
+    SongsTitle,
+    WelcomeMessage,
+} from './MySongs.styles'
 
 function MySongs() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { error } = useSelector((state) => state.song)
     const name = localStorage.getItem('name')
@@ -16,22 +21,16 @@ function MySongs() {
         dispatch(getAllMySongsFetch())
     }, [])
 
-    const goToAddSongPage = () => {
-        navigate('/add-song')
-    }
-
     return (
         <>
             <Navbar />
 
-            <div>
-                <h1>Welcome, {name}!</h1>
-                {error}
-                <button onClick={goToAddSongPage}>Add New Song</button>
-                <h3>My Songs</h3>
-
+            <HomeContainer>
+                <WelcomeMessage>Welcome, {name}!</WelcomeMessage>
+                {error && <ErrorMessage>{error}</ErrorMessage>}
+                <SongsTitle>My Songs</SongsTitle>
                 <SongList />
-            </div>
+            </HomeContainer>
         </>
     )
 }

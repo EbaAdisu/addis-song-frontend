@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useDispatch } from 'react-redux'
 import { removeUser } from '../features/user/userSlice'
-import { LogoutButton } from './Logout.styles'
+import { LogoutButton } from './Logout.styles.jsx'
 
 function Logout() {
     const dispatch = useDispatch()

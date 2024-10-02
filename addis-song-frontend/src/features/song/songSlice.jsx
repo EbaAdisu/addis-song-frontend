@@ -5,6 +5,7 @@ const initialState = {
     currentSong: null,
     loading: false,
     error: null,
+    status: 'idle',
 }
 
 const songSlice = createSlice({
@@ -18,6 +19,7 @@ const songSlice = createSlice({
             state.loading = false
             state.error = null
             state.songs = [...state.songs, action.payload]
+            state.status = 'added'
         },
         addSongFailure: (state, action) => {
             state.loading = false
@@ -30,6 +32,7 @@ const songSlice = createSlice({
             state.loading = false
             state.error = null
             state.songs = action.payload
+            state.status = 'fetched'
         },
         getAllMySongsFailure: (state, action) => {
             state.loading = false
@@ -42,6 +45,7 @@ const songSlice = createSlice({
             state.loading = false
             state.error = null
             state.songs = action.payload
+            state.status = 'fetched'
         },
         getAllSongsFailure: (state, action) => {
             state.loading = false
@@ -68,6 +72,7 @@ const songSlice = createSlice({
             state.songs = state.songs.filter(
                 (song) => song._id !== action.payload
             )
+            state.status = 'deleted'
         },
         deleteSongFailure: (state, action) => {
             state.loading = false
@@ -85,6 +90,7 @@ const songSlice = createSlice({
             if (index !== -1) {
                 state.songs[index] = action.payload
             }
+            state.status = 'updated'
         },
         updateSongFailure: (state, action) => {
             state.loading = false

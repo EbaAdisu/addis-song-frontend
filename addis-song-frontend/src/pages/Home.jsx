@@ -1,9 +1,16 @@
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useRef } from 'react'
-
 import Navbar from '../components/Navbar'
 import SongList from '../components/SongsList'
 import { getAllSongsFetch } from '../features/song/songSlice'
+
+// Import the styled components
+import {
+    HomeContainer,
+    WelcomeMessage,
+    SongsTitle,
+    ErrorMessage,
+} from './Home.styles'
 
 function Home() {
     const dispatch = useDispatch()
@@ -12,19 +19,19 @@ function Home() {
 
     useEffect(() => {
         dispatch(getAllSongsFetch())
-    }, [])
+    }, [dispatch])
 
     return (
         <>
             <Navbar />
-
-            <div>
-                <h1>Welcome, {name}!</h1>
-                {error}
-                <h3>Songs</h3>
+            <HomeContainer>
+                <WelcomeMessage>Welcome, {name}!</WelcomeMessage>
+                {error && <ErrorMessage>{error}</ErrorMessage>}
+                <SongsTitle>Songs</SongsTitle>
                 <SongList />
-            </div>
+            </HomeContainer>
         </>
     )
 }
+
 export default Home

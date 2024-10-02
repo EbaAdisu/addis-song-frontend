@@ -1,12 +1,22 @@
+/** @jsxImportSource @emotion/react */
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { signupRequest, signinRequest } from '../features/user/userSlice'
+import {
+    Container,
+    Form,
+    Input,
+    Button,
+    ErrorMessage,
+    Title,
+    SwitchButton,
+} from './SigninSignup.styles'
 
 const SigninSignup = () => {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
-    const [isSignin, setIsSignin] = useState(true) // Toggle between Signin and signup
+    const [isSignin, setIsSignin] = useState(true) // Toggle between Signin and Signup
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { status, error } = useSelector((state) => state.user) // Access status and error from Redux state
@@ -28,13 +38,13 @@ const SigninSignup = () => {
     }
 
     return (
-        <div style={{ textAlign: 'center' }}>
-            <h2>{isSignin ? 'Signin' : 'Signup'}</h2>
-            {error && <p>{error}</p>}
-            <form onSubmit={handleSubmit}>
+        <Container>
+            <Title>{isSignin ? 'Signin' : 'Signup'}</Title>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+            <Form onSubmit={handleSubmit}>
                 <div>
                     <label>Name:</label>
-                    <input
+                    <Input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -43,19 +53,19 @@ const SigninSignup = () => {
                 </div>
                 <div>
                     <label>Password:</label>
-                    <input
+                    <Input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
-                <button type="submit">{isSignin ? 'Signin' : 'Signup'}</button>
-            </form>
-            <button onClick={() => setIsSignin(!isSignin)}>
+                <Button type="submit">{isSignin ? 'Signin' : 'Signup'}</Button>
+            </Form>
+            <SwitchButton onClick={() => setIsSignin(!isSignin)}>
                 {isSignin ? 'Switch to Signup' : 'Switch to Signin'}
-            </button>
-        </div>
+            </SwitchButton>
+        </Container>
     )
 }
 

@@ -5,10 +5,13 @@ import { useDispatch } from 'react-redux'
 import { getSongFileFetch, deleteSongFetch } from '../features/song/songSlice'
 import {
     SongCard,
+    SongInfo,
     SongTitle,
     SongArtist,
-    SongDescription,
     SongActions,
+    PlayButton,
+    ActionButtons,
+    ActionButton,
 } from './Song.styles'
 
 function Song({ song }) {
@@ -24,15 +27,23 @@ function Song({ song }) {
 
     return (
         <SongCard>
-            <SongTitle onClick={() => playSong(song._id)}>
-                {song.title}
-            </SongTitle>
-            <SongArtist>{song.artist}</SongArtist>
-            <SongDescription>{song.description}</SongDescription>
             <SongActions>
-                <button onClick={() => deleteSong(song._id)}>Delete</button>
-                <Link to={`/update-song/${song._id}`}>Update</Link>
+                <PlayButton onClick={() => playSong(song._id)}>▶️</PlayButton>
             </SongActions>
+            <SongInfo>
+                <SongTitle onClick={() => playSong(song._id)}>
+                    {song.title}
+                </SongTitle>
+                <SongArtist>{song.artist}</SongArtist>
+            </SongInfo>
+            <ActionButtons>
+                <ActionButton onClick={() => deleteSong(song._id)}>
+                    Delete
+                </ActionButton>
+                <Link to={`/update-song/${song._id}`}>
+                    <ActionButton>Update</ActionButton>
+                </Link>
+            </ActionButtons>
         </SongCard>
     )
 }
