@@ -1,23 +1,25 @@
-import { Link } from 'react-router-dom'
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import Logout from './Logout'
 import CheckAuth from './CheckAuth'
+import { Nav, List, ListItem, Link, RightSection } from './Navbar.styles'
 
 function Navbar() {
     return (
-        <nav>
-            <CheckAuth />
-            <ul>
-                <li>
+        <Nav>
+            <List>
+                <ListItem>
                     <Link to="/home">Home</Link>
-                </li>
-                <li>
+                </ListItem>
+                <ListItem>
                     <Link to="/my-songs">My Songs</Link>
-                </li>
-                <li>
-                    <Logout />
-                </li>
-            </ul>
-        </nav>
+                </ListItem>
+            </List>
+            <RightSection>
+                <CheckAuth />
+                <Logout />
+            </RightSection>
+        </Nav>
     )
 }
 
